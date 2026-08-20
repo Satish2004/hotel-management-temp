@@ -18,8 +18,8 @@ const Register = () => {
     const handleClick = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:8000/api/auth/register", info);
-            const loginRes = await axios.post("http://localhost:8000/api/auth/login", { email: info.email, password: info.password }, { withCredentials: true });
+            await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/auth/register`, info);
+            const loginRes = await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/auth/login`, { email: info.email, password: info.password }, { withCredentials: true });
             setUser(loginRes.data.details);
             
             if (info.role === "admin" || info.role === "manager") {

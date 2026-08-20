@@ -21,7 +21,7 @@ const HotelDetails = () => {
 
     const fetchHotel = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/hotels/${id}`);
+            const res = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/hotels/${id}`);
             setHotel(res.data);
         } catch (err) {
             console.error(err);
@@ -30,7 +30,7 @@ const HotelDetails = () => {
 
     const fetchBookedDates = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/bookings/hotel/${id}`);
+            const res = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/bookings/hotel/${id}`);
             const dates = [];
             res.data.forEach(booking => {
                 let current = new Date(booking.checkIn);
@@ -53,13 +53,13 @@ const HotelDetails = () => {
 
     const getImageUrl = (path) => {
         const cleanPath = path.replace(/\\/g, '/');
-        return `http://localhost:8000/${cleanPath}`;
+        return `${import.meta.env.VITE_API_URL || "http://localhost:8000"}/${cleanPath}`;
     };
 
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`http://localhost:8000/api/hotels/${id}/reviews`, review, { withCredentials: true });
+            await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/hotels/${id}/reviews`, review, { withCredentials: true });
             setReview({ rating: 5, comment: "" });
             setError(null);
             fetchHotel(); // Refresh to show new review
@@ -86,12 +86,12 @@ const HotelDetails = () => {
         
         try {
             // 1. Check double booking FIRST
-            await axios.post("http://localhost:8000/api/bookings/check-availability", {
+            await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/bookings/check-availability`, {
                 hotel: id, checkIn: startDate, checkOut: endDate
             }, { withCredentials: true });
 
             // 2. If available, proceed to Stripe Checkout
-            const res = await axios.post("http://localhost:8000/api/bookings/create-checkout-session", {
+            const res = await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/bookings/create-checkout-session`, {
                 hotel: id,
                 name: hotel.name,
                 checkIn: startDate,

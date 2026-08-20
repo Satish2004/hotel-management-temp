@@ -28,7 +28,7 @@ const Dashboard = () => {
 
     const fetchHotels = async () => {
         try {
-            const res = await axios.get("http://localhost:8000/api/hotels");
+            const res = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/hotels`);
             let myHotels = res.data;
             if (user.role === "manager") {
                 myHotels = myHotels.filter(h => h.managerId === user._id || h.managerId?._id === user._id);
@@ -42,8 +42,8 @@ const Dashboard = () => {
     const fetchUsersAndBookings = async () => {
         try {
             const [usersRes, bookingsRes] = await Promise.all([
-                axios.get("http://localhost:8000/api/users", { withCredentials: true }),
-                axios.get("http://localhost:8000/api/bookings/all", { withCredentials: true })
+                axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/users`, { withCredentials: true }),
+                axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/bookings/all`, { withCredentials: true })
             ]);
             setAllUsers(usersRes.data);
 
@@ -96,7 +96,7 @@ const Dashboard = () => {
             }
 
             if (view === "add") {
-                await axios.post("http://localhost:8000/api/hotels", data, { withCredentials: true });
+                await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/hotels`, data, { withCredentials: true });
                 alert("Hotel Added Successfully!");
             } else if (view === "edit") {
                 const updateData = {
@@ -105,7 +105,7 @@ const Dashboard = () => {
                     location: info.location,
                     amenities
                 };
-                await axios.put(`http://localhost:8000/api/hotels/${editId}`, updateData, { withCredentials: true });
+                await axios.put(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/hotels/${editId}`, updateData, { withCredentials: true });
                 alert("Hotel Updated Successfully!");
             }
 
@@ -123,7 +123,7 @@ const Dashboard = () => {
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this property?")) return;
         try {
-            await axios.delete(`http://localhost:8000/api/hotels/${id}`, { withCredentials: true });
+            await axios.delete(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/hotels/${id}`, { withCredentials: true });
             fetchHotels();
         } catch (err) {
             console.error(err);
@@ -387,7 +387,7 @@ const Dashboard = () => {
                                             <div className="image-slider">
                                                 {existingPhotos.map((photo, i) => (
                                                     <div key={i} style={{ flex: '0 0 auto', width: '220px', height: '150px', position: 'relative', borderRadius: '8px', overflow: 'hidden', border: '2px solid var(--border-color)', scrollSnapAlign: 'start', boxShadow: 'var(--shadow-sm)' }}>
-                                                        <img src={`http://localhost:8000${photo}`} alt={`existing-${i}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        <img src={`${import.meta.env.VITE_API_URL || "http://localhost:8000"}${photo}`} alt={`existing-${i}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                     </div>
                                                 ))}
                                             </div>

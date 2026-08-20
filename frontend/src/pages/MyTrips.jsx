@@ -13,7 +13,7 @@ const MyTrips = () => {
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                const res = await axios.get("http://localhost:8000/api/bookings/user", { withCredentials: true });
+                const res = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/bookings/user`, { withCredentials: true });
                 setBookings(res.data);
             } catch (err) {
                 console.error("Failed to fetch bookings");
@@ -30,7 +30,7 @@ const MyTrips = () => {
         if (!cleanPath.startsWith('/')) {
             cleanPath = '/' + cleanPath;
         }
-        return `http://localhost:8000${cleanPath}`;
+        return `${import.meta.env.VITE_API_URL || "http://localhost:8000"}${cleanPath}`;
     };
 
     if (loading) return <div className="page-container"><h1 className="huge-title">Loading your trips...</h1></div>;

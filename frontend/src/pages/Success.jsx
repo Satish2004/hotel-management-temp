@@ -26,7 +26,7 @@ const Success = () => {
             }
 
             try {
-                await axios.post("http://localhost:8000/api/bookings", {
+                await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/bookings`, {
                     hotel, checkIn, checkOut, totalPrice
                 }, { withCredentials: true });
                 setStatus("success");

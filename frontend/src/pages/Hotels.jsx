@@ -16,7 +16,7 @@ const Hotels = () => {
     useEffect(() => {
         const fetchHotels = async () => {
             try {
-                const res = await axios.get("http://localhost:8000/api/hotels");
+                const res = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/hotels`);
                 setHotels(res.data);
             } catch (err) {
                 console.error(err);
@@ -27,7 +27,7 @@ const Hotels = () => {
 
     const getImageUrl = (path) => {
         const cleanPath = path.replace(/\\/g, '/');
-        return `http://localhost:8000/${cleanPath}`;
+        return `${import.meta.env.VITE_API_URL || "http://localhost:8000"}/${cleanPath}`;
     };
 
     const handleFilterChange = (e) => {
