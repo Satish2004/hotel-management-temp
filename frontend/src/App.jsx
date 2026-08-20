@@ -20,7 +20,7 @@ function App() {
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/hotel/:id" element={<HotelDetails />} />
         <Route path="/success" element={<ProtectedRoute><Success /></ProtectedRoute>} />
-        <Route path="/my-trips" element={<ProtectedRoute allowedRoles={['user']}><MyTrips /></ProtectedRoute>} />
+        <Route path="/my-trips" element={<ProtectedRoute><MyTrips /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
