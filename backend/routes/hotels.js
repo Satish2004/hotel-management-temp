@@ -25,6 +25,14 @@ router.post("/", verifyRole(["admin", "manager"]), upload.array("photos", 5), as
         const photoPaths = req.files.map(file => file.path);
         const { isAC, isFan, hasBalcony, hasWiFi, hasPool, hasGym, hasSpa, hasParking, hasRestaurant, name, description, location, pricePerNight } = req.body;
         
+        let customAmenities = [];
+        try {
+            if (req.body.customAmenities) {
+                customAmenities = JSON.parse(req.body.customAmenities);
+            }
+        } catch(e) {
+            console.error("Failed to parse customAmenities", e);
+        }
         const newHotel = new Hotel({
             name,
             description,
@@ -42,6 +50,7 @@ router.post("/", verifyRole(["admin", "manager"]), upload.array("photos", 5), as
                 hasRestaurant: hasRestaurant === 'true'
             },
             photos: photoPaths,
+            customAmenities,
             managerId: req.user.id
         });
 
@@ -79,7 +88,17 @@ router.put("/:id", verifyRole(["admin", "manager"]), async (req, res) => {
         if (req.user.role !== "admin" && hotel.managerId.toString() !== req.user.id) {
             return res.status(403).json("You are not allowed to update this hotel.");
         }
-        const updatedHotel = await Hotel.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+        
+        let updateData = { ...req.body };
+        try {
+            if (req.body.customAmenities) {
+                updateData.customAmenities = JSON.parse(req.body.customAmenities);
+            }
+        } catch(e) {
+            console.error("Failed to parse customAmenities on update", e);
+        }
+
+        const updatedHotel = await Hotel.findByIdAndUpdate(req.params.id, { $set: updateData }, { new: true });
         res.status(200).json(updatedHotel);
     } catch (err) {
         res.status(500).json(err);

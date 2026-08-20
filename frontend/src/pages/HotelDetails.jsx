@@ -185,6 +185,9 @@ const HotelDetails = () => {
                             {hotel.amenities?.hasSpa && <span className="tag" style={{ padding: '0.75rem 1.5rem' }}>Spa & Wellness</span>}
                             {hotel.amenities?.hasParking && <span className="tag" style={{ padding: '0.75rem 1.5rem' }}>Secure Parking</span>}
                             {hotel.amenities?.hasRestaurant && <span className="tag" style={{ padding: '0.75rem 1.5rem' }}>Fine Restaurant</span>}
+                            {hotel.customAmenities && hotel.customAmenities.map((amenity, idx) => (
+                                <span key={idx} className="tag" style={{ padding: '0.75rem 1.5rem', background: 'var(--accent)', color: 'white', borderColor: 'var(--accent)' }}>{amenity}</span>
+                            ))}
                         </div>
                     </motion.div>
 

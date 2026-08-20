@@ -22,6 +22,7 @@ const hotelSchema = new mongoose.Schema({
         hasParking: { type: Boolean, default: false },
         hasRestaurant: { type: Boolean, default: false }
     },
+    customAmenities: [{ type: String }],
     pricePerNight: { type: Number, required: true, default: 5000 },
     photos: [{ type: String }],
     managerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },

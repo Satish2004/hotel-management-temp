@@ -21,6 +21,8 @@ const Dashboard = () => {
     const [files, setFiles] = useState([]);
     const [existingPhotos, setExistingPhotos] = useState([]);
     const [info, setInfo] = useState({ name: "", description: "", location: "", pricePerNight: 5000 });
+    const [customAmenities, setCustomAmenities] = useState([]);
+    const [customAmenityInput, setCustomAmenityInput] = useState("");
     const [amenities, setAmenities] = useState({
         isAC: false, isFan: true, hasBalcony: false, hasWiFi: false, hasPool: false,
         hasGym: false, hasSpa: false, hasParking: false, hasRestaurant: false
@@ -89,6 +91,7 @@ const Dashboard = () => {
             data.append("hasSpa", amenities.hasSpa);
             data.append("hasParking", amenities.hasParking);
             data.append("hasRestaurant", amenities.hasRestaurant);
+            data.append("customAmenities", JSON.stringify(customAmenities));
 
             if (files && files.length > 0) {
                 for (let i = 0; i < files.length; i++) {
@@ -104,7 +107,8 @@ const Dashboard = () => {
                     name: info.name,
                     description: info.description,
                     location: info.location,
-                    amenities
+                    amenities,
+                    customAmenities: JSON.stringify(customAmenities)
                 };
                 await axios.put(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/hotels/${editId}`, updateData, { withCredentials: true });
                 alert("Hotel Updated Successfully!");
@@ -115,6 +119,8 @@ const Dashboard = () => {
             setInfo({ name: "", description: "", location: "", pricePerNight: 5000 });
             setFiles([]);
             setExistingPhotos([]);
+            setCustomAmenities([]);
+            setCustomAmenityInput("");
         } catch (err) {
             console.error(err);
             alert("Error saving hotel");
@@ -136,6 +142,7 @@ const Dashboard = () => {
         setEditId(hotel._id);
         setInfo({ name: hotel.name, description: hotel.description, location: hotel.location, pricePerNight: hotel.pricePerNight || 5000 });
         setAmenities(hotel.amenities);
+        setCustomAmenities(hotel.customAmenities || []);
         setExistingPhotos(hotel.photos || []);
         setView("edit");
     };
@@ -356,6 +363,57 @@ const Dashboard = () => {
                                                 <input type="checkbox" id="hasRestaurant" checked={amenities.hasRestaurant} onChange={handleAmenitiesChange} /> 🍽️ Fine Restaurant
                                             </label>
                                         </div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label className="form-label">Custom Amenities (Add Manually)</label>
+                                        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                                            <input 
+                                                type="text" 
+                                                value={customAmenityInput} 
+                                                onChange={(e) => setCustomAmenityInput(e.target.value)} 
+                                                className="form-control" 
+                                                placeholder="e.g. Free Breakfast, Welcome Drink" 
+                                                style={{ flex: 1 }}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        e.preventDefault();
+                                                        if(customAmenityInput.trim()) {
+                                                            setCustomAmenities(prev => [...prev, customAmenityInput.trim()]);
+                                                            setCustomAmenityInput("");
+                                                        }
+                                                    }
+                                                }}
+                                            />
+                                            <button 
+                                                type="button" 
+                                                className="btn btn-outline" 
+                                                onClick={() => {
+                                                    if(customAmenityInput.trim()) {
+                                                        setCustomAmenities(prev => [...prev, customAmenityInput.trim()]);
+                                                        setCustomAmenityInput("");
+                                                    }
+                                                }}
+                                            >
+                                                Add
+                                            </button>
+                                        </div>
+                                        {customAmenities.length > 0 && (
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                                {customAmenities.map((amenity, index) => (
+                                                    <span key={index} style={{ background: 'var(--border-color)', padding: '0.3rem 0.8rem', borderRadius: '15px', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                                                        {amenity}
+                                                        <button 
+                                                            type="button" 
+                                                            onClick={() => setCustomAmenities(prev => prev.filter((_, i) => i !== index))}
+                                                            style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.1rem', color: 'var(--text-light)', padding: 0 }}
+                                                        >
+                                                            &times;
+                                                        </button>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
 
                                     {view === "add" && (
