@@ -34,12 +34,14 @@ const Dashboard = () => {
                 myHotels = myHotels.filter(h => h.managerId === user._id || h.managerId?._id === user._id);
             }
             setHotels(myHotels);
+            return myHotels;
         } catch (err) {
             console.error(err);
+            return [];
         }
     };
 
-    const fetchUsersAndBookings = async () => {
+    const fetchUsersAndBookings = async (loadedHotels) => {
         try {
             const [usersRes, bookingsRes] = await Promise.all([
                 axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/users`, { withCredentials: true }),
@@ -47,12 +49,11 @@ const Dashboard = () => {
             ]);
             setAllUsers(usersRes.data);
 
-            // If manager, maybe filter bookings to only show bookings for their properties?
-            // User requested: "manager also see the all register user and booked and non booked user"
-            // So we can show them everything, or just all users and filter bookings by their hotels.
+            // If manager, filter bookings to only show bookings for their properties
             let myBookings = bookingsRes.data;
             if (user.role === "manager") {
-                myBookings = myBookings.filter(b => hotels.some(h => h._id === (b.hotel?._id || b.hotel)));
+                const hotelsToUse = loadedHotels || hotels;
+                myBookings = myBookings.filter(b => hotelsToUse.some(h => h._id === (b.hotel?._id || b.hotel)));
             }
             setAllBookings(myBookings);
         } catch (err) {
@@ -65,7 +66,7 @@ const Dashboard = () => {
             navigate("/");
             return;
         }
-        fetchHotels().then(fetchUsersAndBookings);
+        fetchHotels().then(loadedHotels => fetchUsersAndBookings(loadedHotels));
     }, [user, navigate]);
 
     const handleInfoChange = (e) => setInfo(prev => ({ ...prev, [e.target.id]: e.target.value }));
