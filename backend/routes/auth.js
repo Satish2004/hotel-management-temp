@@ -47,7 +47,7 @@ router.post("/login", async (req, res) => {
             secure: true,
             sameSite: "none",
             maxAge: 3 * 24 * 60 * 60 * 1000 // 3 days
-        }).status(200).json({ details: { ...otherDetails }, role: user.role });
+        }).status(200).json({ details: { ...otherDetails }, role: user.role, token });
     } catch (err) {
         res.status(500).json(err);
     }

@@ -20,6 +20,7 @@ const Register = () => {
         try {
             await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/auth/register`, info);
             const loginRes = await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/auth/login`, { email: info.email, password: info.password }, { withCredentials: true });
+            localStorage.setItem("token", loginRes.data.token);
             setUser(loginRes.data.details);
             
             if (info.role === "admin" || info.role === "manager") {
