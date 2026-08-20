@@ -210,7 +210,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* TABS */}
-                <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid var(--border-color)', marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid var(--border-color)', marginBottom: '2rem', overflowX: 'auto', whiteSpace: 'nowrap', WebkitOverflowScrolling: 'touch', paddingBottom: '0.5rem' }}>
                     <button style={activeTab === 'properties' ? activeTabStyle : tabStyle} onClick={() => { setActiveTab('properties'); setView('list'); }}>Properties</button>
                     <button style={activeTab === 'analytics' ? activeTabStyle : tabStyle} onClick={() => setActiveTab('analytics')}>Analytics</button>
                     <button style={activeTab === 'users' ? activeTabStyle : tabStyle} onClick={() => setActiveTab('users')}>Users & Bookings</button>

@@ -162,7 +162,7 @@ const Home = () => {
             <div className="section-padding" style={{ background: 'var(--card-bg)' }}>
                 <div className="container">
                     <div>
-                        <h2 style={{ textAlign: 'center', fontSize: '2.5rem', fontFamily: 'var(--font-display)', marginBottom: '4rem' }}>Uncompromising Standards</h2>
+                        <h2 style={{ textAlign: 'center', fontSize: '2.5rem', fontFamily: 'var(--font-display)', marginBottom: '4rem', padding: '0 1rem' }}>Uncompromising Standards</h2>
                         <div ref={amenitiesRef} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem', textAlign: 'center' }}>
                             {[
                                 { icon: <Shield size={40} />, title: "Verified Properties", desc: "Every location is strictly vetted by our global curators." },
