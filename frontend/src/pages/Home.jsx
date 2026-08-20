@@ -132,7 +132,7 @@ const Home = () => {
             <div className="section-padding" style={{ background: 'var(--bg-color)' }}>
                 <div className="container">
                     <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-                        <h2 className="huge-title" style={{ fontSize: '3rem', marginBottom: '1rem' }}>Curated Experiences.</h2>
+                        <h2 className="huge-title" style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', marginBottom: '1rem', wordBreak: 'break-word', padding: '0 1rem' }}>Curated Experiences.</h2>
                         <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
                             Discover tailored stays designed to match your exact mood, from secluded nature retreats to vibrant city penthouses.
                         </p>
@@ -162,7 +162,7 @@ const Home = () => {
             <div className="section-padding" style={{ background: 'var(--card-bg)' }}>
                 <div className="container">
                     <div>
-                        <h2 style={{ textAlign: 'center', fontSize: '2.5rem', fontFamily: 'var(--font-display)', marginBottom: '4rem', padding: '0 1rem' }}>Uncompromising Standards</h2>
+                        <h2 style={{ textAlign: 'center', fontSize: 'clamp(1.8rem, 8vw, 2.5rem)', fontFamily: 'var(--font-display)', marginBottom: '4rem', padding: '0 1rem', wordBreak: 'break-word' }}>Uncompromising Standards</h2>
                         <div ref={amenitiesRef} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem', textAlign: 'center' }}>
                             {[
                                 { icon: <Shield size={40} />, title: "Verified Properties", desc: "Every location is strictly vetted by our global curators." },
