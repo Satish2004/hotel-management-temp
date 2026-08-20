@@ -44,6 +44,8 @@ router.post("/login", async (req, res) => {
         const { password, ...otherDetails } = user._doc;
         res.cookie("token", token, {
             httpOnly: true,
+            secure: true,
+            sameSite: "none",
             maxAge: 3 * 24 * 60 * 60 * 1000 // 3 days
         }).status(200).json({ details: { ...otherDetails }, role: user.role });
     } catch (err) {
@@ -53,7 +55,7 @@ router.post("/login", async (req, res) => {
 
 // LOGOUT
 router.post("/logout", (req, res) => {
-    res.clearCookie("token").status(200).json({ message: "Logged out successfully." });
+    res.clearCookie("token", { secure: true, sameSite: "none" }).status(200).json({ message: "Logged out successfully." });
 });
 
 export default router;
